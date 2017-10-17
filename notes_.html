@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <style type="text/css">
+        html, body, #app {
+            height: 100%;
+            font-family: "vijaya";
+        }
+
+        #toolbar {
+            float: left;
+            width: 80px;
+            height: 100%;
+            background-color: #30414D;
+            color: #767676;
+            padding: 35px 25px 25px 25px;
+        }
+
+        #toolbar i {
+            font-size: 30px;
+            margin-bottom: 35px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.5s ease;
+        }
+
+        #toolbar i:hover {
+            opacity: 1;
+        }
+
+        #notes-list {
+            float: left;
+            width: 300px;
+            height: 100%;
+            background-color: #F5F5F5;
+            font-weight: 400;
+        }
+
+        #list-header {
+            padding: 5px 25px 25px 25px;
+        }
+
+        #list-header h1 {
+            font-weight: 300;
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 26px;
+            padding-bottom: 8px;
+        }
+
+        .btn {
+            font-size: 20px;
+        }
+
+        #notes-list .container {
+            height: calc(100% - 137px);
+            max-height: calc(100% - 137px);
+            overflow: auto;
+            width: 100%;
+            padding: 0;
+        }
+
+        #notes-list .container .list-group-item {
+            border: 0;
+            border-radius: 0;
+        }
+
+        #note-editor {
+            height: 100%;
+            margin-left: 380px;
+            padding: 10px;
+        }
+        #note-editor input{
+            text-indent: 1em;
+            height: 5%;
+            width: 95%;
+            font-size: 160%;
+            outline: none;
+            border: none;
+            margin-bottom: 5px;
+        }
+        #note-editor textarea {
+            text-indent: 2em;
+            height: 95%;
+            font-size: 150%;
+            border: none;
+        }
+
+        #toolbar i.active {
+            color: #F7AE4F;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div id="app">
+    <div id="toolbar">
+        <i class="glyphicon glyphicon-plus" ng-click="addNote()"></i>
+        <i class="glyphicon glyphicon-star" ng-click="changeBol()"
+           ng-class="{true: 'active', false: ''}[activeNote.bol]"></i>
+        <i class="glyphicon glyphicon-remove" ng-click="del()"></i>
+    </div>
+    <div id="notes-list">
+        <div id="list-header">
+            <h1>Notes</h1>
+            <div class="btn-group btn-group-justified" role="group">
+                <!-- All Notes button -->
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-class="{true:'active', false: ''}[showAll]"
+                            ng-click="showAll=true">
+                        All Notes
+                    </button>
+                </div>
+                <!-- Favorites Button -->
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-class="{true:'', false: 'active'}[showAll]"
+                            ng-click="showAll=false">
+                        Favorites
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- render notes in a list -->
+        <div class="container">
+            <div class="list-group">
+                <a class="list-group-item" href="#" ng-repeat="item in notes | filter: myFilter"
+                   ng-class="{true: 'active', false: ''}[activeNote === item]" ng-click="changeNote(item)">
+                    <h4 class="list-group-item-heading">
+                        {{item.title}}
+                    </h4>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="note-editor">
+        <input type="text" ng-model="activeNote.title">
+        <textarea class="form-control" ng-model="activeNote.content"></textarea>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../angular.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module("myApp", [])
+    app.controller('myCtrl', ['$scope', function ($scope) {
+        $scope.notes = []
+        // 用于控制现在是以全部还是只显示bol为true的内容
+        $scope.showAll = true
+        // 添加note
+        $scope.addNote = function () {
+            var obj = {
+                title: 'New note',
+                content: 'content......',
+                bol: false
+            }
+            $scope.notes.push(obj)
+            $scope.activeNote = obj
+        }
+        // 更改activeNote
+        $scope.changeNote = function (newNote) {
+            $scope.activeNote = newNote
+        }
+        // 更改activeNote的bol值
+        $scope.changeBol = function () {
+            $scope.activeNote.bol = !$scope.activeNote.bol
+        }
+        // 过滤note列表
+        $scope.myFilter = function (item) {
+
+            if ($scope.showAll) {
+                // 显示所有
+                return true
+            } else {
+                // 过滤
+                return item.bol
+            }
+        }
+        // 删除激活的对象
+        $scope.del = function () {
+            var index = $scope.notes.indexOf($scope.activeNote)
+            $scope.notes.splice(index, 1)
+            $scope.activeNote = $scope.notes[0]
+        }
+    }])
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
