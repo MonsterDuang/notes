@@ -127,10 +127,10 @@
         <!-- render notes in a list -->
         <div class="container">
             <div class="list-group">
-                <a class="list-group-item" href="#" ng-repeat="item in notes | filter: myFilter"
+                <a class="list-group-item" href="#" ng-repeat="(index, item) in notes | filter: myFilter"
                    ng-class="{true: 'active', false: ''}[activeNote === item]" ng-click="changeNote(item)">
                     <h4 class="list-group-item-heading">
-                        {{item.title}}
+                        {{item.title}} {{index}}
                     </h4>
                 </a>
             </div>
