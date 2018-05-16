@@ -127,10 +127,10 @@
         <!-- render notes in a list -->
         <div class="container">
             <div class="list-group">
-                <a class="list-group-item" href="#" ng-repeat="(index, item) in notes | filter: myFilter"
+                <a class="list-group-item" href="#" ng-repeat="item in notes | filter: myFilter"
                    ng-class="{true: 'active', false: ''}[activeNote === item]" ng-click="changeNote(item)">
                     <h4 class="list-group-item-heading">
-                        {{item.title}} {{index}}
+                        {{item.title}}
                     </h4>
                 </a>
             </div>
@@ -150,14 +150,16 @@
         // 用于控制现在是以全部还是只显示bol为true的内容
         $scope.showAll = true
         // 添加note
+        var i = 0
         $scope.addNote = function () {
             var obj = {
-                title: 'New note',
-                content: 'content......',
+                title: 'New note ' + i,
+                content: 'content...... ' + i,
                 bol: false
             }
             $scope.notes.push(obj)
             $scope.activeNote = obj
+            i++
         }
         // 更改activeNote
         $scope.changeNote = function (newNote) {
